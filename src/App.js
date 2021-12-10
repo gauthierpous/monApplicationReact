@@ -1,7 +1,9 @@
 import logo from './logo.svg';
 import './App.css';
 import InstantHeartrate from "./component/InstantHeartrate";
+import Graphic from "./component/Graphic"
 import { useEffect, useState } from "react";
+
 
 function randomHeartrate(){
   return Math.floor(Math.random()*160) + 40;
@@ -10,7 +12,7 @@ function randomHeartrate(){
 function App() {
   //Initialise les propriété
   //Retourne une propriétés et une fonction pour la modifier
-  const [measurements, setMeasurement] = useState([50]);
+  const [measurements, setMeasurement] = useState([]);
 
   // Fonction qui est appelé lors du chargement de la page
   // Défini un interval de 2 secondes
@@ -19,7 +21,11 @@ function App() {
   useEffect(() => {
     setInterval(() => {
       setMeasurement((prev) => {
-        return [...prev, randomHeartrate()]
+        const measurement = {
+          timestamp: new Date().getTime(),
+          heartrate: randomHeartrate(),
+        }
+        return [...prev, measurement]
       });
     }, 2000);
   }, [])
@@ -36,13 +42,7 @@ function App() {
           Modifier le fichier <code>src/App.js</code> et le rechargement sera automatique.
         </p>
         <InstantHeartrate data={measurement}/>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-        </a>
+        <Graphic datalist={measurements}/>
       </header>
     </div>
   );
